@@ -1,0 +1,3 @@
+# RaiNeovim
+
+my neovim config
