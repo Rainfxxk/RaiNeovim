@@ -1,10 +1,10 @@
 local plugins = {
     {
-        name = "comment",
+        name = "comment.nvim",
         author = "Rainfxxk",
     },
     {
-        name = "github-theme",
+        name = "github-nvim-theme",
         author = "projekt0n",
     },
     {
@@ -12,15 +12,15 @@ local plugins = {
         author = "HUAHUAI23",
     },
     {
-        name = "plenary",
+        name = "plenary.nvim",
         author = "nvim-lua",
     },
     {
-        name = "yazi",
+        name = "yazi.nvim",
         author = "mikavilpas",
     },
     {
-        name = "lualine",
+        name = "lualine.nvim",
         author = "nvim-lualine",
     },
     {
@@ -80,7 +80,7 @@ local plugins = {
         author = "mfussenegger",
     },
     {
-        name = "dapui",
+        name = "nvim-dap-ui",
         author = "rcarriga",
     },
     {
