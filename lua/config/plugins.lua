@@ -1,10 +1,10 @@
 local plugins = {
     {
-        name = "comment",
+        name = "comment.nvim",
         author = "Rainfxxk",
     },
     {
-        name = "github-theme",
+        name = "github-nvim-theme",
         author = "projekt0n",
     },
     {
@@ -12,15 +12,19 @@ local plugins = {
         author = "HUAHUAI23",
     },
     {
-        name = "plenary",
+        name = "plenary.nvim",
         author = "nvim-lua",
     },
+    -- {
+    --     name = "yazi",
+    --     author = "mikavilpas",
+    -- },
     {
-        name = "yazi",
-        author = "mikavilpas",
+        name = "oil.nvim",
+        author = "stevearc",
     },
     {
-        name = "lualine",
+        name = "lualine.nvim",
         author = "nvim-lualine",
     },
     {
@@ -80,7 +84,7 @@ local plugins = {
         author = "mfussenegger",
     },
     {
-        name = "dapui",
+        name = "nvim-dap-ui",
         author = "rcarriga",
     },
     {
@@ -121,7 +125,7 @@ local plugins = {
     },
 }
 
-local prefix = vim.fn.stdpath("data") .. '/'
+local prefix = vim.fn.stdpath("data")
 
 local platform = vim.loop.os_uname().sysname
 
@@ -138,6 +142,7 @@ function is_path_exist(path, platform)
         vim.print("not support MacOs")
     elseif platform == "Windows_NT" then
         result = os.execute( 'if exist "' .. path .. '" (exit 1) else (exit 0)' )
+        -- vim.print("windows: " .. path .. result)
     else
         vim.print("未知平台:", platform)
     end
@@ -146,14 +151,10 @@ function is_path_exist(path, platform)
 end
 
 for _, plugin in ipairs(plugins) do
-    local path = prefix .. plugin.name
+    local path = vim.fs.joinpath(prefix, plugin.name)
 
-    if (not is_path_exist(path, platform)) then
-	    vim.print(plugin.name)
-        -- result = vim.fn.systemlist("cd " .. prefix .. "; git clone https://github.com/" .. plugin.author .. "/" .. plugin.name)
-        -- result = os.execute("cd " .. prefix .. "; git clone https://github.com/" .. plugin.author .. "/" .. plugin.name)
-        os.execute("cd " .. prefix .. "; git clone https://github.com/" .. plugin.author .. "/" .. plugin.name)
-        -- vim.print(result)
+    if (is_path_exist(path, platform) == 0) then
+        retult = vim.fn.system("git clone https://github.com/" .. plugin.author .. "/" .. plugin.name .. " " .. path)
     end
 
     vim.opt.rtp:prepend(path)
