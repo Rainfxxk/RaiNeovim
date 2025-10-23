@@ -14,12 +14,6 @@ keymap.set({'n'}, "<leader>h", "<c-w>h")
 keymap.set({'n'}, "<leader>j", "<c-w>j")
 keymap.set({'n'}, "<leader>k", "<c-w>k")
 keymap.set({'n'}, "<leader>l", "<c-w>l")
--- keymap.set({'n'}, "<leader>wv", "<c-w>v")
--- keymap.set({'n'}, "<leader>ws", "<c-w>s")
--- keymap.set({'n'}, "<leader>wh", "<c-w>h")
--- keymap.set({'n'}, "<leader>wj", "<c-w>j")
--- keymap.set({'n'}, "<leader>wk", "<c-w>k")
--- keymap.set({'n'}, "<leader>wl", "<c-w>l")
 
 -- buffer move, support floaterm
 local function buf_prev()
@@ -58,6 +52,7 @@ keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
 keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
 
 keymap.set('n', '<leader>tt', ":FloatermToggle<cr>", opt)
+keymap.set('n', '<leader>tJ', ":FloatermNew --wintype=split --height=0.3 --position=rightbelow <cr>", opt)
 keymap.set('n', '<leader>tn', ":FloatermNew<cr>", opt)
 keymap.set('n', '<leader>th', ":FloatermHide!<cr>", opt)
 keymap.set('n', '<leader>tk', ":FloatermKill<cr>", opt)
@@ -96,4 +91,7 @@ keymap.set('t', '<ESC>', "<C-\\><C-n>", opt)
 -- lsp
 keymap.set('n', 'gd', vim.lsp.buf.definition, opt)
 keymap.set('n', 'gD', vim.lsp.buf.declaration, opt)
+keymap.set('n', 'gi', vim.diagnostic.open_float, opt)
+
+keymap.set({'n', 'v'}, '<leader>/', ":AutoComment<cr>", opt)
 

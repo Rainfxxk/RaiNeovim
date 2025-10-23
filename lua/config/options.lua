@@ -30,4 +30,6 @@ opt.ignorecase = true
 opt.smartcase = true
 
 -- enable mouse 
--- opt.mouse:append("a")
+opt.mouse:append("a")
+
+opt.fillchars:append({eob = ' '})
