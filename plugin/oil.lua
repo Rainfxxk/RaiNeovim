@@ -33,4 +33,7 @@ oil.setup {
             wrap = false,
         },
     },
+    view_options = {
+        show_hidden = true,
+    }
 }
