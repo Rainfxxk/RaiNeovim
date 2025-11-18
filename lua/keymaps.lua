@@ -46,11 +46,11 @@ keymap.set({ 'n' }, "<leader>y", ":Oil --float --preview<cr>", opt)
 -- Neotree
 keymap.set({ 'n', 'v' }, "<leader>e", ":Neotree toggle<cr>", opt)
 
-local builtin = require('telescope.builtin')
-keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
-keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
-keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Telescope buffers' })
-keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
+
+keymap.set('n', '<leader>ff', require('telescope.builtin').find_files, { desc = 'Telescope find files' })
+keymap.set('n', '<leader>fg', require('telescope.builtin').live_grep,  { desc = 'Telescope live grep' })
+keymap.set('n', '<leader>fb', require('telescope.builtin').buffers,    { desc = 'Telescope buffers' })
+keymap.set('n', '<leader>fh', require('telescope.builtin').help_tags,  { desc = 'Telescope help tags' })
 
 keymap.set('n', '<leader>tt', ":FloatermToggle<cr>", opt)
 keymap.set('n', '<leader>tJ', ":FloatermNew --wintype=split --height=0.3 --position=rightbelow <cr>", opt)
@@ -68,6 +68,7 @@ keymap.set('n', '<leader>ty', function()
         vim.print("FloatermUpdate --floaterm_width=" .. vim.g.floaterm_width)
     end
 end, opt)
+
 keymap.set('n', '<leader>to', function()
     vim.g.floaterm_width = vim.g.floaterm_width - 0.1
     if vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal" then
@@ -93,7 +94,5 @@ keymap.set('t', '<ESC>', "<C-\\><C-n>", opt)
 keymap.set('n', 'gd', vim.lsp.buf.definition, opt)
 keymap.set('n', 'gD', vim.lsp.buf.declaration, opt)
 keymap.set('n', 'gi', vim.diagnostic.open_float, opt)
-keymap.set('n', 'gk', "[d", opt)
-keymap.set('n', 'gj', "]d", opt)
-
-keymap.set({ 'n', 'v' }, '<leader>/', ":AutoComment<cr>", opt)
+keymap.set('n', 'gj', function() vim.diagnostic.jump { count = 1 } end, opt)
+keymap.set('n', 'gk', function() vim.diagnostic.jump { count = -1 } end, opt)

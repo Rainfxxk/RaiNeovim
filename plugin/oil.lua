@@ -3,9 +3,6 @@ local oil = require("oil")
 oil.setup {
     columns = {
         "icon",
-        -- "permissions",
-        -- "size",
-        -- "mtime",
     },
     float = {
         max_width = 0.9,
@@ -20,9 +17,15 @@ oil.setup {
         ["<ESC>"] = {"actions.close", mode = "n"},
         ["q"] = {"actions.close", mode = "n"},
         ["<s-h>"] = {"actions.parent", mode = "n"},
-        ["<s-l>"] = { 
+        ["<s-cr>"] = {
             function()
-                entry = oil.get_cursor_entry()
+                local entry = oil.get_cursor_entry()
+                if (entry == nil) then return end
+                if (entry.type == "directory") then oil.select() end
+            end, mode = "n"},
+        ["<s-l>"] = {
+            function()
+                local entry = oil.get_cursor_entry()
                 if (entry == nil) then return end
                 if (entry.type == "directory") then oil.select() end
             end, mode = "n"}

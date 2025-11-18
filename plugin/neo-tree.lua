@@ -1,9 +1,10 @@
 require("neo-tree").setup({
     close_if_last_window = true,
+    statusline = true,
     filesystem = {
         visible = true, -- when true, they will just be displayed differently than normal items
-        -- hide_dotfiles = false,
-        -- hide_gitignored = false,
+        hide_dotfiles = false,
+        hide_gitignored = false,
         -- hide_hidden = false, -- only works on Windows for hidden files/directories
     },
     default_component_configs = {

@@ -63,10 +63,10 @@ local plugins = {
         name = "dashboard-nvim",
         author = "nvimdev",
     },
-    {
-        name = "nvim-lspconfig",
-        author = "neovim",
-    },
+    -- {
+    --     name = "nvim-lspconfig",
+    --     author = "neovim",
+    -- },
     {
         name = "mason.nvim",
         author = "mason-org",
@@ -151,7 +151,6 @@ function create_float_window()
     end, {buffer = buf})
 
     local start_col = math.floor((w - string.len("Rain's Plugin Manager")) / 2)
-    vim.print(start_col)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, { string.rep(" ", start_col) .. "Rain's Plugin Manager" })
     local ns = vim.api.nvim_create_namespace("manual_highlight")
     vim.hl.range(buf, ns, "Title", {0, start_col}, {0, start_col + string.len("Rain's Plugin Manager")}, nil)
@@ -180,13 +179,15 @@ function download(plugin, win, buf, line_num)
     local stdout = vim.uv.new_pipe()
     local stderr = vim.uv.new_pipe()
 
+    local target = vim.fs.joinpath(vim.fn.stdpath("data"), plugin.name)
+
     local handle, pid = vim.uv.spawn("git", {
             args = {
                 "clone",
                 "--progress",
                 "--verbose",
                 "https://github.com/" .. plugin.author .. "/" .. plugin.name,
-                vim.fs.joinpath(vim.fn.stdpath("data"), plugin.name),
+                target,
             },
             stdio = {stdin, stdout, stderr}
         },
