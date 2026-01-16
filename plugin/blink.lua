@@ -1,5 +1,4 @@
 require("blink.cmp").setup{
-
     cmdline = { enabled = true },
     -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
     -- 'super-tab' for mappings similar to vscode (tab to accept)
@@ -16,9 +15,9 @@ require("blink.cmp").setup{
     keymap = {
         -- set to 'none' to disable the 'default' preset
         preset = 'none',
-        ['<enter>'] = { "accept", "fallback" },
-        ['<tab>'] = { 'select_next', "snippet_forward", 'fallback' },
-        ['<s-tab>'] = { 'select_prev', "snippet_backward", 'fallback' },
+        ['<tab>'] = { "accept", "fallback" },
+        ['<C-j>'] = { 'select_next', "snippet_forward", 'fallback' },
+        ['<C-k>'] = { 'select_prev', "snippet_backward", 'fallback' },
         ['<Up>'] = { 'select_prev', "snippet_backward", 'fallback' },
         ['<Down>'] = { 'select_next', "snippet_forward", 'fallback' },
         ['<C-e>'] = false, -- or {}
@@ -31,7 +30,6 @@ require("blink.cmp").setup{
             'select_next'
         },
     },
-
 
     appearance = {
       nerd_font_variant = 'mono'
@@ -57,14 +55,3 @@ require("blink.cmp").setup{
     },
     fuzzy = { implementation = "prefer_rust_with_warning" },
 }
-
-local capabilities = {
-  textDocument = {
-    foldingRange = {
-      dynamicRegistration = false,
-      lineFoldingOnly = true
-    }
-  }
-}
-
-capabilities = require('blink.cmp').get_lsp_capabilities(capabilities)

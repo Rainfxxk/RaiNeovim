@@ -1,4 +1,5 @@
-local plugins = {
+local rpm = {}
+rpm.plugins = {
     {
         name = "comment.nvim",
         author = "Rainfxxk",
@@ -6,6 +7,10 @@ local plugins = {
     {
         name = "github-nvim-theme",
         author = "projekt0n",
+    },
+    {
+        name = "nvim",
+        author = "catppuccin",
     },
     {
         name = "nvim-quietlight",
@@ -122,10 +127,41 @@ local plugins = {
     {
         name = "render-markdown.nvim",
         author = "MeanderingProgrammer",
+        opts = {
+            enabled = true,
+            render_modes = true,
+            sign = {
+                enabled = false,
+            },
+            completions = {
+                blink = {
+                    enabled = true,
+                },
+            },
+        },
+        events = {
+            {event = "BufEnter", pattern = "*.md"}
+        }
+    },
+    {
+        name = "multiple-cursors.nvim",
+        author = "brenton-leighton",
+    },
+    {
+        name = "zen-mode.nvim",
+        author = "folke",
+    },
+    {
+        name = "buffer_manager.nvim",
+        author = "j-morano",
+    },
+    {
+        -- path = "/home/rain/.local/share/nvim/bufferlist.nvim/"
+        path = "/home/rain/.local/share/nvim/bufferlist.nvim"
     },
 }
 
-function create_float_window()
+local function create_float_window()
     local buf = vim.api.nvim_create_buf(false, true)
     local screen_h = vim.o.lines
     local screen_w = vim.o.columns
@@ -164,16 +200,16 @@ vim.api.nvim_create_user_command(
     {}
 )
 
-local buf = nil
-local win = nil 
-local line_num = 0
+rpm.buf = nil
+rpm.win = nil
+rpm.line_num = 0
 
 
-function download(plugin, win, buf, line_num)
-    
+function rpm.download(plugin, line_num)
+
     local title_line = line_num
     local progress_line = line_num + 1
-    vim.api.nvim_buf_set_lines(buf, title_line, title_line + 1, false, { "downloading " .. plugin.name })
+    vim.api.nvim_buf_set_lines(rpm.buf, title_line, title_line + 1, false, { "downloading " .. plugin.name })
 
     local stdin = vim.uv.new_pipe()
     local stdout = vim.uv.new_pipe()
@@ -193,8 +229,7 @@ function download(plugin, win, buf, line_num)
         },
         function(code, signal) -- on exit
             vim.schedule(function ()
-                vim.api.nvim_buf_set_lines(buf, title_line, title_line + 1, false, { plugin.name .. ": ✅" })
-                -- vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
+                vim.api.nvim_buf_set_lines(rpm.buf, title_line, title_line + 1, false, { plugin.name .. ": ✅" })
             end)
         end
     )
@@ -204,8 +239,7 @@ function download(plugin, win, buf, line_num)
         if data then
             vim.schedule(function ()
                 for line in data:gmatch("[^\r\n]+") do
-                    vim.api.nvim_buf_set_lines(buf, progress_line, progress_line + 1, false, { line })
-                    -- vim.api.nvim_win_set_cursor(win, { vim.api.nvim_buf_line_count(buf), 0 })
+                    vim.api.nvim_buf_set_lines(rpm.buf, progress_line, progress_line + 1, false, { line })
                 end
             end)
         else
@@ -215,17 +249,38 @@ function download(plugin, win, buf, line_num)
 
 end
 
-for _, plugin in ipairs(plugins) do
+for _, plugin in ipairs(rpm.plugins) do
+    if (plugin.path ~= nil) then
+        vim.opt.rtp:prepend(plugin.path)
+        goto continue
+    end
     local path = vim.fs.joinpath(vim.fn.stdpath("data"), plugin.name)
 
     if (not vim.uv.fs_stat(path)) then
-        if (buf == nil and win == nil) then
-            buf, win = create_float_window()
-            line_num = 0
+        if (rpm.buf == nil and rpm.win == nil) then
+            rpm.buf, rpm.win = create_float_window()
+            rpm.line_num = 0
         end
-        download(plugin, win, buf, line_num)
-        line_num = line_num + 2
+        rpm.download(plugin, rpm.line_num)
+        rpm.line_num = rpm.line_num + 2
 	end
-
-    vim.opt.rtp:prepend(path)
+    if (plugin.events == nil) then
+        vim.opt.rtp:prepend(path)
+    else
+        for _, event in ipairs(plugin.events) do
+            -- vim.opt.rtp:prepend(path)
+            vim.api.nvim_create_autocmd(event.event, {
+                pattern = event.pattern,
+                once = true,
+                callback = function()
+                    print("loading " .. plugin.name)
+                    vim.opt.rtp:prepend(path)
+                    local plugin_path = vim.fs.joinpath(path, 'plugin')
+                    vim.cmd("source " .. vim.fs.joinpath(plugin_path, "*.lua"))
+                    require("render-markdown").setup(plugin.opts)
+                end
+            })
+        end
+    end
+    ::continue::
 end

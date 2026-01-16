@@ -1,12 +1,4 @@
 -- 拦截第一次 require
-local old_req = require
-require = function(name)
-    local result = string.find(name, "render-markdown") ~= nil
-    if result then
-        print(debug.traceback('render-markdown required at startup!'))
-    end
-    return old_req(name)
-end
 require("options")
 require("rpm")
 require("keymaps")
