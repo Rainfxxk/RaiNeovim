@@ -8,6 +8,12 @@ local opt = { noremap = true, silent = true }
 keymap.set({ 'n' }, "<leader>q", ":q<cr>", opt)
 
 -- windows split and move
+keymap.set({ 'n' }, "<c-v>",     "<c-w>v")
+keymap.set({ 'n' }, "<c-s>",     "<c-w>s")
+keymap.set({ 'n' }, "<c-h>",     "<c-w>h")
+keymap.set({ 'n' }, "<c-j>",     "<c-w>j")
+keymap.set({ 'n' }, "<c-k>",     "<c-w>k")
+keymap.set({ 'n' }, "<c-l>",     "<c-w>l")
 keymap.set({ 'n' }, "<leader>v", "<c-w>v")
 keymap.set({ 'n' }, "<leader>s", "<c-w>s")
 keymap.set({ 'n' }, "<leader>h", "<c-w>h")
@@ -40,12 +46,12 @@ keymap.set({ 'n' }, "<s-l>", buf_next, opt)
 -- keymap.set({ 'n' }, "<leader>bd", ":BufferLineCloseRight<cr>", opt)
 
 -- Yazi
--- keymap.set({'n'}, "<leader>y", ":Yazi<cr>", opt)
+keymap.set({'n'}, "<leader>Y", ":Yazi<cr>", opt)
 keymap.set({ 'n' }, "<leader>y", ":Oil --float --preview<cr>", opt)
 
 -- buffer manager
 keymap.set({ 'n' }, "<leader>bm", function () require("buffer_manager.ui").toggle_quick_menu() end, opt)
-keymap.set({ 'n' }, "<leader>bl", function () require("bufferlist.ui").bufferlist_toggle() end, opt)
+keymap.set({ 'n' }, "<leader>bl", function () require("bufferman.ui").bufferlist_toggle() end, opt)
 
 -- Neotree
 keymap.set({ 'n', 'v' }, "<leader>e", ":Neotree toggle<cr>", opt)
@@ -91,15 +97,17 @@ keymap.set('n', '<leader>ti', function()
         vim.print("FloatermUpdate --height=" .. vim.g.floaterm_height)
     end
 end, opt)
-keymap.set('t', '<ESC>', "<C-\\><C-n>", opt)
+keymap.set('t', '<ESC><ESC>', "<C-\\><C-n>", opt)
 
 -- lsp
+keymap.set({ 'n' }, 'gf', vim.lsp.buf.format, opt)
 keymap.set({ 'n' }, 'gd', vim.lsp.buf.definition, opt)
 keymap.set({ 'n' }, 'gD', vim.lsp.buf.declaration, opt)
 keymap.set({ 'n' }, 'gi', vim.diagnostic.open_float, opt)
 keymap.set({ 'n' }, 'gj', function() vim.diagnostic.jump { count = 1 } end, opt)
 keymap.set({ 'n' }, 'gk', function() vim.diagnostic.jump { count = -1 } end, opt)
 
+-- multiple cursor
 keymap.set({"n", "x"},   "<leader>cj",      "<Cmd>MultipleCursorsAddDown<CR>",          opt)
 keymap.set({"n", "x"},   "<leader>ck",      "<Cmd>MultipleCursorsAddUp<CR>",            opt)
 keymap.set({"n", "x"},   "<leader>c<Up>",   "<Cmd>MultipleCursorsAddUp<CR>",            opt)

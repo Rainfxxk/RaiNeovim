@@ -26,14 +26,8 @@ require("ibl").setup {
         char = "│",
         highlight = highlight,
     },
-    whitespace = {
-        -- highlight = highlight,
-        remove_blankline_trail = true,
-    },
-    scope = {
-        enabled = false,
-    },
+    scope = { enabled = false },
     exclude = {
         filetypes = { "dashboard" },
-    }
+    },
 }

@@ -1,6 +1,10 @@
 local rpm = {}
 rpm.plugins = {
     {
+        name = "firenvim", author = "glacambre",
+        -- build = function() vim.cmd("call firenvim#install(0)") end
+    },
+    {
         name = "comment.nvim",
         author = "Rainfxxk",
     },
@@ -13,16 +17,8 @@ rpm.plugins = {
         author = "catppuccin",
     },
     {
-        name = "nvim-quietlight",
-        author = "HUAHUAI23",
-    },
-    {
         name = "plenary.nvim",
         author = "nvim-lua",
-    },
-    {
-        name = "yazi.nvim",
-        author = "mikavilpas",
     },
     {
         name = "oil.nvim",
@@ -68,10 +64,6 @@ rpm.plugins = {
         name = "dashboard-nvim",
         author = "nvimdev",
     },
-    -- {
-    --     name = "nvim-lspconfig",
-    --     author = "neovim",
-    -- },
     {
         name = "mason.nvim",
         author = "mason-org",
@@ -112,17 +104,9 @@ rpm.plugins = {
         name = "remote-nvim.nvim",
         author = "amitds1997",
     },
-    -- {
-    --     name = "smear-cursor.nvim",
-    --     author = "sphamba" 
-    -- },
     {
         name = "neovim",
         author = "rose-pine",
-    },
-    {
-        name = "vscode.nvim",
-        author = "gamunu",
     },
     {
         name = "render-markdown.nvim",
@@ -156,8 +140,8 @@ rpm.plugins = {
         author = "j-morano",
     },
     {
-        -- path = "/home/rain/.local/share/nvim/bufferlist.nvim/"
-        path = "/home/rain/.local/share/nvim/bufferlist.nvim"
+        name = "bufferman.nvim",
+        author = "Rainfxxk",
     },
 }
 
@@ -273,7 +257,7 @@ for _, plugin in ipairs(rpm.plugins) do
                 pattern = event.pattern,
                 once = true,
                 callback = function()
-                    print("loading " .. plugin.name)
+                    -- print("loading " .. plugin.name)
                     vim.opt.rtp:prepend(path)
                     local plugin_path = vim.fs.joinpath(path, 'plugin')
                     vim.cmd("source " .. vim.fs.joinpath(plugin_path, "*.lua"))
@@ -281,6 +265,9 @@ for _, plugin in ipairs(rpm.plugins) do
                 end
             })
         end
+    end
+    if (plugin.build ~= nil) then
+        plugin.build()
     end
     ::continue::
 end
