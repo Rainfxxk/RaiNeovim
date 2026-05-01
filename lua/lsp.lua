@@ -1,6 +1,7 @@
 vim.lsp.enable("lua_ls")
 vim.lsp.enable("clangd")
 vim.lsp.enable("pylsp")
+vim.lsp.enable("hls")
 -- vim.lsp.enable("svls")
 
 vim.lsp.inlay_hint.enable(true)
