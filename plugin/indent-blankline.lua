@@ -28,6 +28,6 @@ require("ibl").setup {
     },
     scope = { enabled = false },
     exclude = {
-        filetypes = { "dashboard" },
+        filetypes = { "dashboard", "oil", },
     },
 }

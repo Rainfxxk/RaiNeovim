@@ -1,92 +1,40 @@
 local rpm = {}
 rpm.plugins = {
-    {
-        name = "flash.nvim",        author = "folke",
-    },
-    {
-        name = "firenvim",          author = "glacambre",
-        -- build = function() vim.cmd("call firenvim#install(0)") end
-    },
-    {
-        name = "comment.nvim",      author = "Rainfxxk",
-    },
-    {
-        name = "github-nvim-theme", author = "projekt0n",
-    },
-    {
-        name = "nvim",              author = "catppuccin",
-    },
-    {
-        name = "plenary.nvim",      author = "nvim-lua",
-    },
-    {
-        name = "oil.nvim",          author = "stevearc",
-    },
-    {
-        name = "lualine.nvim",      author = "nvim-lualine",
-    },
-    {
-        name = "nvim-web-devicons", author = "nvim-tree",
-    },
-    {
-        name = "nvim-notify",       author = "rcarriga",
-    },
-    {
-        name = "nui.nvim",          author = "MunifTanjim",
-    },
-    {
-        name = "noice.nvim",        author = "folke",
-    },
-    {
-        name = "neo-tree.nvim",     author = "nvim-neo-tree",
-    },
-    {
-        name = "bufferline.nvim",   author = "akinsho",
-    },
-    {
-        name = "telescope.nvim",    author = "nvim-telescope",
-    },
-    {
-        name = "nvim-treesitter",   author = "nvim-treesitter",
-    },
-    {
-        name = "dashboard-nvim",    author = "nvimdev",
-    },
-    {
-        name = "mason.nvim",        author = "mason-org",
-    },
-    {
-        name = "mason-lspconfig.nvim", author = "mason-org",
-    },
-    {
-        name = "blink.cmp", author = "Saghen",
-    },
-    {
-        name = "nvim-dap", author = "mfussenegger",
-    },
-    {
-        name = "nvim-dap-ui", author = "rcarriga",
-    },
-    {
-        name = "vim-floaterm", author = "voldikss",
-    },
-    {
-        name = "nvim-window-picker", author = "s1n7ax",
-    },
-    {
-        name = "friendly-snippets", author = "rafamadriz",
-    },
-    {
-        name = "indent-blankline.nvim", author = "lukas-reineke",
-    },
-    {
-        name = "remote-nvim.nvim", author = "amitds1997",
-    },
-    {
-        name = "neovim", author = "rose-pine",
-    },
-    {
-        name = "render-markdown.nvim", author = "MeanderingProgrammer",
+    { name = "tokyonight.nvim",       author = "folke",            },
+    { name = "nvim-quietlight",       author = "HUAHUAI23",        },
+    { name = "flash.nvim",            author = "folke",            },
+    { name = "firenvim",              author = "glacambre",        },    -- build = function() vim.cmd("call firenvim#install(0)") end
+    { name = "comment.nvim",          author = "Rainfxxk",         },
+    { name = "github-nvim-theme",     author = "projekt0n",        },
+    { name = "nvim",                  author = "catppuccin",       },
+    { name = "plenary.nvim",          author = "nvim-lua",         },
+    { name = "oil.nvim",              author = "stevearc",         },
+    { name = "lualine.nvim",          author = "nvim-lualine",     },
+    { name = "nvim-web-devicons",     author = "nvim-tree",        },
+    { name = "nvim-notify",           author = "rcarriga",         },
+    { name = "nui.nvim",              author = "MunifTanjim",      },
+    { name = "noice.nvim",            author = "folke",            },
+    { name = "neo-tree.nvim",         author = "nvim-neo-tree",    },
+    { name = "bufferline.nvim",       author = "akinsho",          },
+    { name = "telescope.nvim",        author = "nvim-telescope",   },
+    { name = "nvim-treesitter",       author = "nvim-treesitter",  },
+    { name = "dashboard-nvim",        author = "nvimdev",          },
+    { name = "mason.nvim",            author = "mason-org",        },
+    { name = "mason-lspconfig.nvim",  author = "mason-org",        },
+    { name = "blink.cmp",             author = "Saghen",           },
+    { name = "nvim-dap",              author = "mfussenegger",     },
+    { name = "nvim-dap-ui",           author = "rcarriga",         },
+    { name = "vim-floaterm",          author = "voldikss",         },
+    { name = "nvim-window-picker",    author = "s1n7ax",           },
+    { name = "friendly-snippets",     author = "rafamadriz",       },
+    { name = "indent-blankline.nvim", author = "lukas-reineke",    },
+    { name = "remote-nvim.nvim",      author = "amitds1997",       },
+    { name = "neovim",                author = "rose-pine",        },
+    { name = "multiple-cursors.nvim", author = "brenton-leighton", },
+    { name = "zen-mode.nvim",         author = "folke",            },
+    { name = "buffer_manager.nvim",   author = "j-morano",         },
+    { name = "bufferman.nvim",        author = "Rainfxxk",         },
+    { name = "render-markdown.nvim",  author = "MeanderingProgrammer",
         opts = {
             enabled = true,
             render_modes = true,
@@ -102,18 +50,6 @@ rpm.plugins = {
         events = {
             {event = "BufEnter", pattern = "*.md"}
         }
-    },
-    {
-        name = "multiple-cursors.nvim", author = "brenton-leighton",
-    },
-    {
-        name = "zen-mode.nvim", author = "folke",
-    },
-    {
-        name = "buffer_manager.nvim", author = "j-morano",
-    },
-    {
-        name = "bufferman.nvim", author = "Rainfxxk",
     },
 }
 

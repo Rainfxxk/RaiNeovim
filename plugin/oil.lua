@@ -9,16 +9,17 @@ end
 oil.setup {
     columns = {
         "icon",
-        "size",
-        "permissions",
-        "ctime",
+        -- "size",
+        -- "permissions",
+        -- "ctime",
     },
     float = {
         max_width = 0.9,
         max_height = 0.9,
-        border = {"┌", "─", "┐", "│", "┘", "─", "└", "│"},
+        border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"},
     },
     keymaps_help = {
+        -- border = {"╭", "─", "╮", "│", "╯", "─", "╰", "│"},
         border = {"┌", "─", "┐", "│", "┘", "─", "└", "│"},
     },
     keymaps = {
