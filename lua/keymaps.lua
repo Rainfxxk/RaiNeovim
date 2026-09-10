@@ -8,12 +8,6 @@ local opt = { noremap = true, silent = true }
 keymap.set({ 'n' }, "<leader>q", ":q<cr>", opt)
 
 -- windows split and move
-keymap.set({ 'n' }, "<c-v>",     "<c-w>v")
-keymap.set({ 'n' }, "<c-s>",     "<c-w>s")
-keymap.set({ 'n' }, "<c-h>",     "<c-w>h")
-keymap.set({ 'n' }, "<c-j>",     "<c-w>j")
-keymap.set({ 'n' }, "<c-k>",     "<c-w>k")
-keymap.set({ 'n' }, "<c-l>",     "<c-w>l")
 keymap.set({ 'n' }, "<leader>v", "<c-w>v")
 keymap.set({ 'n' }, "<leader>s", "<c-w>s")
 keymap.set({ 'n' }, "<leader>h", "<c-w>h")
@@ -50,6 +44,8 @@ keymap.set({ 'n' }, "<leader>y", ":Oil --float --preview<cr>", opt)
 -- buffer manager
 keymap.set({ 'n' }, "<leader>bm", function () require("buffer_manager.ui").toggle_quick_menu() end, opt)
 keymap.set({ 'n' }, "<leader>bl", function () require("bufferman.ui").bufferlist_toggle() end, opt)
+keymap.set({ 'n' }, "<s-j>",   function () require("bufferman.ui").bufferlist_toggle() end, opt)
+keymap.set({ 'n' }, "<s-k>",   function () require("bufferman.ui").bufferlist_toggle() end, opt)
 
 -- Neotree
 keymap.set({ 'n', 'v' }, "<leader>e", ":Neotree toggle<cr>", opt)
@@ -85,6 +81,8 @@ local floaterm_switch = function(pos)
         width = 0.5
         height = vim.o.lines
     end
+    vim.g.floaterm_wintype = wintype
+    vim.g.floaterm_position = position
     vim.g.floaterm_width = width
     vim.g.floaterm_height = height
     local cmd = string.format(fmt, wintype, position, width, height)
@@ -132,45 +130,15 @@ keymap.set({ 'n' }, '<leader>ty', function() floaterm_resize('w', 1) end, opt)
 keymap.set({ 'n' }, '<leader>tu', function() floaterm_resize('h', -1) end, opt)
 keymap.set({ 'n' }, '<leader>ti', function() floaterm_resize('h', 1) end, opt)
 keymap.set({ 'n' }, '<leader>to', function() floaterm_resize('w', -1) end, opt)
--- keymap.set({ 'n' }, '<leader>ty', function()
---     vim.g.floaterm_width = vim.g.floaterm_width + 0.1
---     if (vim.g.floaterm_width >= 0.9) then
---         vim.g.floaterm_width = vim.o.columns
---         vim.print(vim.o.columns)
---     end
---     if vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal" then
---         vim.cmd("FloatermUpdate --width=" .. vim.g.floaterm_width)
---         vim.print("FloatermUpdate --floaterm_width=" .. vim.g.floaterm_width)
---     end
--- end, opt)
-
--- keymap.set('n', '<leader>to', function()
---     vim.g.floaterm_width = vim.g.floaterm_width - 0.1
---     if vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal" then
---         vim.cmd("FloatermUpdate --width=" .. vim.g.floaterm_width)
---     end
--- end, opt)
--- keymap.set('n', '<leader>tu', function()
---     vim.g.floaterm_height = vim.g.floaterm_height - 0.1
---     if vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal" then
---         vim.cmd("FloatermUpdate --height=" .. vim.g.floaterm_height)
---     end
--- end, opt)
--- keymap.set('n', '<leader>ti', function()
---     vim.g.floaterm_height = vim.g.floaterm_height + 0.1
---     if vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal" then
---         vim.cmd("FloatermUpdate --height=" .. vim.g.floaterm_height)
---         vim.print("FloatermUpdate --height=" .. vim.g.floaterm_height)
---     end
--- end, opt)
 
 -- lsp
 keymap.set({ 'n' }, 'gf', vim.lsp.buf.format,                                opt)
 keymap.set({ 'n' }, 'gd', vim.lsp.buf.definition,                            opt)
 keymap.set({ 'n' }, 'gD', vim.lsp.buf.declaration,                           opt)
+keymap.set({ 'n' }, 'gi', vim.lsp.buf.implementation,                        opt)
 keymap.set({ 'n' }, 'gr', vim.lsp.buf.rename,                                opt)
 keymap.set({ 'n' }, 'gc', vim.lsp.buf.incoming_calls,                        opt)
-keymap.set({ 'n' }, 'gi', vim.diagnostic.open_float,                         opt)
+keymap.set({ 'n' }, 'go', vim.diagnostic.open_float,                         opt)
 keymap.set({ 'n' }, 'gj', function() vim.diagnostic.jump { count = 1 } end,  opt)
 keymap.set({ 'n' }, 'gk', function() vim.diagnostic.jump { count = -1 } end, opt)
 
@@ -193,3 +161,16 @@ keymap.set({ "n", "x", "o" }, "S",     function() require("flash").treesitter() 
 keymap.set({"o"},             "r",     function() require("flash").remote() end,            opt)
 keymap.set({ "o", "x" },      "R",     function() require("flash").treesitter_search() end, opt)
 keymap.set({ "c" },           "<c-s>", function() require("flash").toggle() end,            opt)
+
+-- persistence.nvim
+-- load the session for the current directory
+vim.keymap.set("n", "<leader>qs", function() require("persistence").load() end)
+
+-- select a session to load
+vim.keymap.set("n", "<leader>qS", function() require("persistence").select() end)
+
+-- load the last session
+vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last = true }) end)
+
+-- stop Persistence => session won't be saved on exit
+vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end)

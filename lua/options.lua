@@ -32,4 +32,17 @@ opt.smartcase = true
 -- enable mouse 
 opt.mouse:append("a")
 
-opt.fillchars:append({eob = ' '})
+opt.fillchars:append({
+  vert = "│",
+  horiz = "─",
+  horizup = "┴",
+  horizdown = "┬",
+  vertleft = "┤",
+  vertright = "├",
+  verthoriz = "┼",
+  eob = " ", -- 隐藏文末波浪~
+})
+
+opt.laststatus = 3;
+vim.api.nvim_set_hl(0, "StatusLine", { link = "Normal" })
+vim.api.nvim_set_hl(0, "StatusLineNC", { link = "Normal" })

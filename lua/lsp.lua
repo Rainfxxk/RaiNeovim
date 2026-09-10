@@ -19,5 +19,7 @@ vim.diagnostic.config {
             [vim.diagnostic.severity.HINT] = '●',
         }
     }
-
 }
+
+vim.cmd("set completeopt+=noselect")
+

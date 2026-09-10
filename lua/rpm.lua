@@ -1,15 +1,28 @@
 local rpm = {}
 rpm.plugins = {
+    -- leetcode
+    { name = "leetcode.nvim",         author = "kawre",            },
+    -- session manager
+    { name = "persistence.nvim",      author = "folke",            },
+    -- color scheme
+    { name = "gruvbox.nvim",          author = "ellisonleao"       },
     { name = "tokyonight.nvim",       author = "folke",            },
     { name = "nvim-quietlight",       author = "HUAHUAI23",        },
+    { name = "github-nvim-theme",     author = "projekt0n",        },
+    { name = "nvim",                  author = "catppuccin",       },
+    -- lsp
+    { name = 'conform.nvim',          author = "stevearc"          },
+    { name = "mason.nvim",            author = "mason-org",        },
+    { name = "mason-lspconfig.nvim",  author = "mason-org",        },
+    { name = "blink.cmp",             author = "Saghen",           },
+    -- ui
+    { name = "outline.nvim",          author = "hedyhli",          },
+    { name = "lualine.nvim",          author = "nvim-lualine",     },
+    { name = "oil.nvim",              author = "stevearc"          },
     { name = "flash.nvim",            author = "folke",            },
     { name = "firenvim",              author = "glacambre",        },    -- build = function() vim.cmd("call firenvim#install(0)") end
     { name = "comment.nvim",          author = "Rainfxxk",         },
-    { name = "github-nvim-theme",     author = "projekt0n",        },
-    { name = "nvim",                  author = "catppuccin",       },
     { name = "plenary.nvim",          author = "nvim-lua",         },
-    { name = "oil.nvim",              author = "stevearc",         },
-    { name = "lualine.nvim",          author = "nvim-lualine",     },
     { name = "nvim-web-devicons",     author = "nvim-tree",        },
     { name = "nvim-notify",           author = "rcarriga",         },
     { name = "nui.nvim",              author = "MunifTanjim",      },
@@ -19,11 +32,9 @@ rpm.plugins = {
     { name = "telescope.nvim",        author = "nvim-telescope",   },
     { name = "nvim-treesitter",       author = "nvim-treesitter",  },
     { name = "dashboard-nvim",        author = "nvimdev",          },
-    { name = "mason.nvim",            author = "mason-org",        },
-    { name = "mason-lspconfig.nvim",  author = "mason-org",        },
-    { name = "blink.cmp",             author = "Saghen",           },
     { name = "nvim-dap",              author = "mfussenegger",     },
-    { name = "nvim-dap-ui",           author = "rcarriga",         },
+    { name = "nvim-dap-ui",           author = "rcarriga", require = {
+    { name = "nvim-nio",              author = "nvim-neotest"      }}},
     { name = "vim-floaterm",          author = "voldikss",         },
     { name = "nvim-window-picker",    author = "s1n7ax",           },
     { name = "friendly-snippets",     author = "rafamadriz",       },
@@ -34,6 +45,8 @@ rpm.plugins = {
     { name = "zen-mode.nvim",         author = "folke",            },
     { name = "buffer_manager.nvim",   author = "j-morano",         },
     { name = "bufferman.nvim",        author = "Rainfxxk",         },
+    { name = "cmd.nvim",              author = "Rainfxxk",         },
+    { name = "cmdline.nvim",          author = "Rainfxxk",         },
     { name = "render-markdown.nvim",  author = "MeanderingProgrammer",
         opts = {
             enabled = true,
@@ -141,41 +154,51 @@ function rpm.download(plugin, line_num)
 
 end
 
-for _, plugin in ipairs(rpm.plugins) do
-    if (plugin.path ~= nil) then
-        vim.opt.rtp:prepend(plugin.path)
-        goto continue
-    end
-    local path = vim.fs.joinpath(vim.fn.stdpath("data"), plugin.name)
+rpm.load_plugin = function (plugins)
+    for _, plugin in ipairs(plugins) do
+        if (plugin.require ~= nil) then
+            rpm.load_plugin(plugin.require)
+        end
 
-    if (not vim.uv.fs_stat(path)) then
-        if (rpm.buf == nil and rpm.win == nil) then
-            rpm.buf, rpm.win = create_float_window()
-            rpm.line_num = 0
+        if (plugin.path ~= nil) then
+            vim.opt.rtp:prepend(plugin.path)
+            goto continue
         end
-        rpm.download(plugin, rpm.line_num)
-        rpm.line_num = rpm.line_num + 2
-	end
-    if (plugin.events == nil) then
-        vim.opt.rtp:prepend(path)
-    else
-        for _, event in ipairs(plugin.events) do
-            -- vim.opt.rtp:prepend(path)
-            vim.api.nvim_create_autocmd(event.event, {
-                pattern = event.pattern,
-                once = true,
-                callback = function()
-                    -- print("loading " .. plugin.name)
-                    vim.opt.rtp:prepend(path)
-                    local plugin_path = vim.fs.joinpath(path, 'plugin')
-                    vim.cmd("source " .. vim.fs.joinpath(plugin_path, "*.lua"))
-                    require("render-markdown").setup(plugin.opts)
-                end
-            })
+
+        local path = vim.fs.joinpath(vim.fn.stdpath("data"), plugin.name)
+        if (not vim.uv.fs_stat(path)) then
+            if (rpm.buf == nil and rpm.win == nil) then
+                rpm.buf, rpm.win = create_float_window()
+                rpm.line_num = 0
+            end
+            rpm.download(plugin, rpm.line_num)
+            rpm.line_num = rpm.line_num + 2
         end
+
+        if (plugin.events == nil) then
+            vim.opt.rtp:prepend(path)
+        else
+            for _, event in ipairs(plugin.events) do
+                -- vim.opt.rtp:prepend(path)
+                vim.api.nvim_create_autocmd(event.event, {
+                    pattern = event.pattern,
+                    once = true,
+                    callback = function()
+                        -- print("loading " .. plugin.name)
+                        vim.opt.rtp:prepend(path)
+                        local plugin_path = vim.fs.joinpath(path, 'plugin')
+                        vim.cmd("source " .. vim.fs.joinpath(plugin_path, "*.lua"))
+                        require("render-markdown").setup(plugin.opts)
+                    end
+                })
+            end
+        end
+        if (plugin.build ~= nil) then
+            plugin.build()
+        end
+
+        ::continue::
     end
-    if (plugin.build ~= nil) then
-        plugin.build()
-    end
-    ::continue::
 end
+
+rpm.load_plugin(rpm.plugins)

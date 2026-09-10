@@ -5,7 +5,7 @@ require("bufferline").setup{
         offsets = {
 		    {
 				filetype = "neo-tree",
-				text = "Neo Tree",
+				text = "Exporler",
                 separator = true,
                 highlight = "Directory"
 			},
@@ -23,7 +23,7 @@ require("bufferline").setup{
         custom_areas = {
             right = function()
                 local result = {
-                    {text = ' 󰇘', link = "Normal"},
+                    {text = ' Rain ', link = "Normal"},
                 }
                 return result
             end,
