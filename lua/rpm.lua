@@ -14,7 +14,8 @@ rpm.plugins = {
     { name = 'conform.nvim',          author = "stevearc"          },
     { name = "mason.nvim",            author = "mason-org",        },
     { name = "mason-lspconfig.nvim",  author = "mason-org",        },
-    { name = "blink.cmp",             author = "Saghen",           },
+    { name = "blink.cmp",             author = "Saghen",   require = {
+    { name = "blink.lib",             author = "Saghen"            }}},
     -- ui
     { name = "outline.nvim",          author = "hedyhli",          },
     { name = "lualine.nvim",          author = "nvim-lualine",     },
@@ -45,8 +46,6 @@ rpm.plugins = {
     { name = "zen-mode.nvim",         author = "folke",            },
     { name = "buffer_manager.nvim",   author = "j-morano",         },
     { name = "bufferman.nvim",        author = "Rainfxxk",         },
-    { name = "cmd.nvim",              author = "Rainfxxk",         },
-    { name = "cmdline.nvim",          author = "Rainfxxk",         },
     { name = "render-markdown.nvim",  author = "MeanderingProgrammer",
         opts = {
             enabled = true,
