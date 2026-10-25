@@ -24,7 +24,7 @@ vim.api.nvim_create_autocmd({ "WinNew", "WinClosed" }, {
         if tab_has_horizontal_split() then
             vim.o.laststatus = 3
         else
-            vim.o.laststatus = 0
+            vim.o.laststatus = 3
         end
     end,
 })

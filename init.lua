@@ -1,4 +1,3 @@
--- 拦截第一次 require
 require("rpm")
 require("keymaps")
 require("lsp")

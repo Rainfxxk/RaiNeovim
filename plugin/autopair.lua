@@ -63,6 +63,10 @@ local function register_pair_keymap(pair)
         end
     end
 
+    local pair_in_visual = function ()
+        
+    end
+
     vim.keymap.set('i', begin_pair, begin_pair_func)
     vim.keymap.set('i', end_pair, end_pair_func)
 end

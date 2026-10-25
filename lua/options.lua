@@ -3,6 +3,12 @@ local opt = vim.opt
 -- clipboard
 opt.clipboard:append("unnamedplus")
 
+-- keep hidden buffers loaded (needed by workspace.nvim buffer scopes)
+opt.hidden = true
+
+-- sessions need tab-local cwds for workspace.nvim
+opt.sessionoptions = { "buffers", "tabpages", "curdir", "globals" }
+
 -- line number
 opt.number = true
 opt.relativenumber = true

@@ -33,17 +33,15 @@ local function buf_next()
     end
 end
 
-keymap.set({ 'n' }, "<s-h>", buf_prev, opt)
-keymap.set({ 'n' }, "<s-l>", buf_next, opt)
-keymap.set({ 'n' }, "<leader>bd", ":bd!<cr>", opt)
+keymap.set({ 'n' }, "<s-l>", ":BufferLineCycleNext<cr>", opt)
+keymap.set({ 'n' }, "<s-h>", ":BufferLineCyclePrev<cr>", opt)
 
 -- Yazi
 keymap.set({'n'}, "<leader>Y", ":Yazi<cr>", opt)
 keymap.set({ 'n' }, "<leader>y", ":Oil --float --preview<cr>", opt)
 
 -- buffer manager
-keymap.set({ 'n' }, "<leader>bm", function () require("buffer_manager.ui").toggle_quick_menu() end, opt)
-keymap.set({ 'n' }, "<leader>bl", function () require("bufferman.ui").bufferlist_toggle() end, opt)
+keymap.set({ 'n' }, "<leader>b", function () require("bufferman.ui").bufferlist_toggle() end, opt)
 keymap.set({ 'n' }, "<s-j>",   function () require("bufferman.ui").bufferlist_toggle() end, opt)
 keymap.set({ 'n' }, "<s-k>",   function () require("bufferman.ui").bufferlist_toggle() end, opt)
 
@@ -51,18 +49,20 @@ keymap.set({ 'n' }, "<s-k>",   function () require("bufferman.ui").bufferlist_to
 keymap.set({ 'n', 'v' }, "<leader>e", ":Neotree toggle<cr>", opt)
 
 -- telescope
-keymap.set({ 'n' }, '<leader>ff', require('telescope.builtin').find_files, { desc = 'Telescope find files' })
-keymap.set({ 'n' }, '<leader>fg', require('telescope.builtin').live_grep,  { desc = 'Telescope live grep' })
-keymap.set({ 'n' }, '<leader>fb', require('telescope.builtin').buffers,    { desc = 'Telescope buffers' })
-keymap.set({ 'n' }, '<leader>fh', require('telescope.builtin').help_tags,  { desc = 'Telescope help tags' })
+keymap.set({ 'n' }, '<leader>ff', require('telescope.builtin').find_files,              { desc = 'Telescope find files' })
+keymap.set({ 'n' }, '<leader>fg', require('telescope.builtin').live_grep,               { desc = 'Telescope live grep' })
+keymap.set({ 'n' }, '<leader>fb', require('telescope.builtin').buffers,                 { desc = 'Telescope buffers' })
+keymap.set({ 'n' }, '<leader>fh', require('telescope.builtin').help_tags,               { desc = 'Telescope help tags' })
+keymap.set({ 'n' }, '<leader>fs', require('telescope').extensions.persistence.sessions, { desc = 'Telescope session' })
+keymap.set({ 'n' }, '<leader>fw', ":Telescope workspace<cr>",                           opt)
 
 -- floaterm
 local is_floaterm = function()
-    return vim.bo[vim.api.nvim_get_current_buf()].buftype ~= "terminal"
+    return vim.bo[vim.api.nvim_get_current_buf()].buftype == "terminal"
 end
 
 local floaterm_switch = function(pos)
-    if is_floaterm() then return end
+    if not is_floaterm() then return end
     local fmt = ":FloatermUpdate --wintype=%s --position=%s --width=%f --height=%f"
     local wintype, position, width, height
     if pos == 'float' then
@@ -90,7 +90,7 @@ local floaterm_switch = function(pos)
 end
 
 local floaterm_resize = function(dim, delta)
-    if is_floaterm() then return end
+    if not is_floaterm() then return end
     local fmt, old_val, new_val, total_val
     if (dim == 'w') then
         fmt = "FloatermUpdate --width=%f"
@@ -103,7 +103,7 @@ local floaterm_resize = function(dim, delta)
     end
 
     if (old_val < 1) then
-        new_val = delta == 1 and old_val + 0.1 or old_val - 0.1
+        new_val = delta == 1 and old_val + 0.05 or old_val - 0.05
     else
         local tmp = math.floor(0.1 * total_val)
         new_val = delta == 1 and old_val + tmp or old_val - tmp
@@ -174,3 +174,11 @@ vim.keymap.set("n", "<leader>ql", function() require("persistence").load({ last 
 
 -- stop Persistence => session won't be saved on exit
 vim.keymap.set("n", "<leader>qd", function() require("persistence").stop() end)
+
+-- workspace
+vim.keymap.set("n", "<leader>wn", "<cmd>Workspace new<cr>")
+vim.keymap.set("n", "<leader>wo", "<cmd>Workspace open<cr>")
+vim.keymap.set("n", "<leader>wl", "<cmd>Workspace list<cr>")
+vim.keymap.set("n", "<leader>wc", "<cmd>WorkspaceClose<cr>")
+vim.keymap.set("n", "<c-l>", "<cmd>Workspace next<cr>")
+vim.keymap.set("n", "<c-h>", "<cmd>Workspace prev<cr>")

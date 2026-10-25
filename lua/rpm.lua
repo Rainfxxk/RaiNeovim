@@ -1,57 +1,55 @@
 local rpm = {}
 rpm.plugins = {
     -- leetcode
-    { name = "leetcode.nvim",        author = "kawre", },
+    { name = "leetcode.nvim",         author = "kawre",            },
     -- session manager
-    { name = "persistence.nvim",     author = "folke", },
+    { name = "persistence.nvim",      author = "folke",            },
     -- color scheme
-    { name = "gruvbox.nvim",         author = "ellisonleao" },
-    { name = "tokyonight.nvim",      author = "folke", },
-    { name = "nvim-quietlight",      author = "HUAHUAI23", },
-    { name = "github-nvim-theme",    author = "projekt0n", },
-    { name = "nvim",                 author = "catppuccin", },
+    { name = "gruvbox.nvim",          author = "ellisonleao"       },
+    { name = "tokyonight.nvim",       author = "folke",            },
+    { name = "nvim-quietlight",       author = "HUAHUAI23",        },
+    { name = "github-nvim-theme",     author = "projekt0n",        },
+    { name = "nvim",                  author = "catppuccin",       },
     -- lsp
     { name = 'conform.nvim',          author = "stevearc"          },
     { name = "mason.nvim",            author = "mason-org",        },
     { name = "mason-lspconfig.nvim",  author = "mason-org",        },
-    { name = "blink.cmp",             author = "Saghen",   require = {
+    { name = "blink.cmp",             author = "Saghen", require = {
     { name = "blink.lib",             author = "Saghen"            }}},
     -- ui
-    { name = "outline.nvim",         author = "hedyhli", },
-    { name = "lualine.nvim",         author = "nvim-lualine", },
-    { name = "oil.nvim",             author = "stevearc" },
-    { name = "flash.nvim",           author = "folke", },
-    { name = "firenvim",             author = "glacambre", },         -- build = function() vim.cmd("call firenvim#install(0)") end
-    { name = "comment.nvim",         author = "Rainfxxk", },
-    { name = "plenary.nvim",         author = "nvim-lua", },
-    { name = "nvim-web-devicons",    author = "nvim-tree", },
-    { name = "nvim-notify",          author = "rcarriga", },
-    { name = "nui.nvim",             author = "MunifTanjim", },
-    { name = "noice.nvim",           author = "folke", },
-    { name = "neo-tree.nvim",        author = "nvim-neo-tree", },
-    { name = "bufferline.nvim",      author = "akinsho", },
-    { name = "telescope.nvim",       author = "nvim-telescope", },
-    { name = "nvim-treesitter",      author = "nvim-treesitter", },
-    { name = "dashboard-nvim",       author = "nvimdev", },
-    { name = "nvim-dap",             author = "mfussenegger", },
-    {
-        name = "nvim-dap-ui",
-        author = "rcarriga",
-        require = {
-            { name = "nvim-nio", author = "nvim-neotest" } }
-    },
-    { name = "vim-floaterm",          author = "voldikss", },
-    { name = "nvim-window-picker",    author = "s1n7ax", },
-    { name = "friendly-snippets",     author = "rafamadriz", },
-    { name = "indent-blankline.nvim", author = "lukas-reineke", },
-    { name = "remote-nvim.nvim",      author = "amitds1997", },
-    { name = "neovim",                author = "rose-pine", },
+    { name = "outline.nvim",          author = "hedyhli",          },
+    { name = "lualine.nvim",          author = "nvim-lualine",     },
+    { name = "oil.nvim",              author = "stevearc"          },
+    { name = "flash.nvim",            author = "folke",            },
+    { name = "firenvim",              author = "glacambre",        },         -- build = function() vim.cmd("call firenvim#install(0)") end
+    { name = "comment.nvim",          author = "Rainfxxk",         },
+    { name = "plenary.nvim",          author = "nvim-lua",         },
+    { name = "nvim-web-devicons",     author = "nvim-tree",        },
+    { name = "nvim-notify",           author = "rcarriga",         },
+    { name = "nui.nvim",              author = "MunifTanjim",      },
+    { name = "noice.nvim",            author = "folke",            },
+    { name = "neo-tree.nvim",         author = "nvim-neo-tree",    },
+    { name = "bufferline.nvim",       author = "akinsho",          },
+    { name = "telescope.nvim",        author = "nvim-telescope",   },
+    { name = "nvim-treesitter",       author = "nvim-treesitter",  },
+    { name = "dashboard-nvim",        author = "nvimdev",          },
+    { name = "nvim-dap",              author = "mfussenegger",     },
+    { name = "nvim-dap-ui",           author = "rcarriga", require = {
+    { name = "nvim-nio",              author = "nvim-neotest"      }}},
+    { name = "dropbar.nvim",          author = "Bekaboo"           },
+    { name = "vim-floaterm",          author = "voldikss",         },
+    { name = "nvim-window-picker",    author = "s1n7ax",           },
+    { name = "friendly-snippets",     author = "rafamadriz",       },
+    { name = "indent-blankline.nvim", author = "lukas-reineke",    },
+    { name = "remote-nvim.nvim",      author = "amitds1997",       },
+    { name = "neovim",                author = "rose-pine",        },
     { name = "multiple-cursors.nvim", author = "brenton-leighton", },
     { name = "zen-mode.nvim",         author = "folke",            },
     { name = "buffer_manager.nvim",   author = "j-morano",         },
     { name = "bufferman.nvim",        author = "Rainfxxk",         },
+    { name = "workspace.nvim",        path = vim.fs.joinpath(vim.fn.stdpath("data"), "workspace.nvim") },
     { name = "render-markdown.nvim",  author = "MeanderingProgrammer",
-        opts = {
+                                                                   opts = {
             enabled = true,
             render_modes = true,
             sign = {
@@ -218,8 +216,9 @@ rpm.update_plugin = function(plugin)
         },
         function(code, signal) -- on exit
             vim.schedule(function()
+                local plugin_name = vim.fs.joinpath(plugin.author, plugin.name)
                 if code == 0 then
-                    vim.notify(plugin.name .. " update successfully")
+                    vim.notify(plugin_name .. " update successfully")
                 else
                     vim.notify(plugin.name .. " update failed")
                 end
@@ -230,7 +229,10 @@ end
 
 rpm.update_plugins = function(plugins)
     for _, plugin in ipairs(plugins) do
-        rpm.update_plugin(plugin)
+        -- locally developed plugins (e.g. workspace.nvim) are not git pulls
+        if plugin.path == nil then
+            rpm.update_plugin(plugin)
+        end
     end
 end
 
